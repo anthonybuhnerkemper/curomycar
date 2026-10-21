@@ -62,7 +62,7 @@ def header(home=False):
  <div class="wrap bar">
   <a href="{'#top' if home else '/'}" class="logo" aria-label="Curo My Car home"><img src="/assets/favicon.svg" alt="" width="36" height="36"><span>CURO <b>MY CAR</b></span></a>
   <button class="nav-toggle" aria-expanded="false" aria-controls="nav" aria-label="Menu"><span></span><span></span><span></span></button>
-  <nav id="nav" aria-label="Main"><a href="/services/">Services</a><a href="/service-area/">Service Area</a><a href="{p}#why">Why Walter</a><a href="{p}#faq">FAQ</a><a href="{p}#quote">Quote</a><a class="btn btn-sm" href="{p}#book">Book Now</a></nav>
+  <nav id="nav" aria-label="Main"><a href="/services/">Services</a><a href="/service-area/">Service Area</a><a href="{p}#why">Why Walter</a><a href="{p}#faq">FAQ</a><a href="{p}#quote">Quote</a><a class="btn btn-sm" href="{p}#quote">Get a Quote</a></nav>
  </div>
 </header>
 '''
@@ -71,19 +71,19 @@ def footer(home=False):
     p = "" if home else "/"
     svc = "".join(f'<li><a href="/{s["slug"]}/">{esc(s["name"])}</a></li>' for s in SERVICES)
     cty = "".join(f'<li><a href="/{c["slug"]}/">{esc(c["name"])}</a></li>' for c in CITIES)
-    priv = ('<p class="priv" id="privacy"><b>Privacy:</b>&nbsp;This site uses no cookies, analytics, or trackers. Quote requests are delivered to Walter\'s email by the FormSubmit service (formsubmit.co); this site does not store them. If you book online, scheduling is handled by Microsoft Bookings under Microsoft\'s privacy policy. Your info is used only to contact you about your vehicle and is never sold. <a href="/privacy.html">Full privacy note</a>.</p>\n' if home else "")
+    priv = ('<p class="priv" id="privacy"><b>Privacy:</b>&nbsp;This site uses no cookies, analytics, or trackers. Quote requests are delivered to Walter\'s email by the FormSubmit service (formsubmit.co); this site does not store them. If online booking is ever enabled, scheduling is handled by Microsoft Bookings under Microsoft\'s privacy policy. Your info is used only to contact you about your vehicle and is never sold. <a href="/privacy.html">Full privacy note</a>.</p>\n' if home else "")
     return f'''<footer class="foot"><div class="wrap">
  <div class="foot-grid">
   <div><h2 class="foot-h"><a href="/services/">Services</a></h2><ul class="foot-links">{svc}</ul></div>
   <div><h2 class="foot-h"><a href="/service-area/">Service Area</a></h2><ul class="foot-links">{cty}</ul></div>
-  <div><h2 class="foot-h">Contact</h2><ul class="foot-links"><li><a href="tel:{PHONE_T}" data-phone="tel"><span data-phone-text>{PHONE_D}</span></a></li><li><a href="sms:{PHONE_T}" data-phone="sms">Text Walter</a></li><li><a href="mailto:{EMAIL}">{EMAIL}</a></li><li><a href="{p}#book">Book online</a></li><li><a href="{p}#quote">Request a quote</a></li><li><a href="/privacy.html">Privacy</a></li></ul><p>Mon&ndash;Sat 8am&ndash;6pm<br>Mobile service based in Stafford, TX</p></div>
+  <div><h2 class="foot-h">Contact</h2><ul class="foot-links"><li><a href="tel:{PHONE_T}" data-phone="tel"><span data-phone-text>{PHONE_D}</span></a></li><li><a href="sms:{PHONE_T}" data-phone="sms">Text Walter</a></li><li><a href="mailto:{EMAIL}">{EMAIL}</a></li><li><a href="{p}#quote">Request a quote</a></li><li><a href="/privacy.html">Privacy</a></li></ul><p>Mon&ndash;Sat 8am&ndash;6pm<br>Mobile service based in Stafford, TX</p></div>
  </div>
  <p>&copy; <span id="year">2026</span> Curo My Car &middot; <b>{I_STAR} Veteran Owned</b> &middot; Mobile mechanic serving Fort Bend County, TX</p>
  {priv}</div></footer>
 <nav class="mbar" aria-label="Quick contact">
  <a href="tel:{PHONE_T}" data-phone="tel">{I_PHONE}Call</a>
  <a href="sms:{PHONE_T}" data-phone="sms">{I_SMS}Text</a>
- <a href="{p}#book" class="hot">{I_CAL}Book</a>
+ <a href="{p}#quote" class="hot">{I_CAL}Get a Quote</a>
 </nav>
 <script src="/js/config.js" defer></script>
 <script src="/js/main.js" defer></script>
@@ -119,8 +119,8 @@ def hero(crumbs, eyebrow, h1, lead):
  </div>
 </section>
 '''
-def cta(book="/#book"):
-    return f'''<div class="cta"><a class="btn" href="tel:{PHONE_T}" data-phone="tel">{I_PHONE} Call <span data-phone-text>{PHONE_D}</span></a><a class="btn btn-ghost" href="sms:{PHONE_T}" data-phone="sms">{I_SMS} Text</a><a class="btn btn-ghost" href="{book}">{I_CAL} Book Now</a></div>'''
+def cta(quote="/#quote"):
+    return f'''<div class="cta"><a class="btn" href="tel:{PHONE_T}" data-phone="tel">{I_PHONE} Call <span data-phone-text>{PHONE_D}</span></a><a class="btn btn-ghost" href="sms:{PHONE_T}" data-phone="sms">{I_SMS} Text</a><a class="btn btn-ghost" href="{quote}">{I_CAL} Get a Quote</a></div>'''
 def cta_band(text):
     return f'''<section class="sec book"><div class="wrap"><div class="book-fallback"><h2 class="stencil cta-h">Get it fixed where you are</h2><p>{text}</p>{cta()}<p class="small">Mon&ndash;Sat 8am&ndash;6pm &middot; Price given before any work starts &middot; <a href="/#quote">Request a quote by email</a></p></div></div></section>
 '''
@@ -146,7 +146,7 @@ def service_page(s):
  <h2>What's included</h2>{ul(s["included"])}
  <h2>Signs you need it</h2>{ul(s["signs"], "bullets")}
  <h2>How mobile service works</h2>
- <ol class="steps steps-sm"><li><b>1</b><h3>Call, text, or book</h3><p>Tell Walter the year, make and model and what's going on.</p></li><li><b>2</b><h3>Get an upfront price</h3><p>You know the cost before any work starts.</p></li><li><b>3</b><h3>Walter comes to you</h3><p>Home, office, or parking lot in Fort Bend County.</p></li></ol>
+ <ol class="steps steps-sm"><li><b>1</b><h3>Call, text, or request a quote</h3><p>Tell Walter the year, make and model and what's going on.</p></li><li><b>2</b><h3>Get an upfront price</h3><p>You know the cost before any work starts.</p></li><li><b>3</b><h3>Walter comes to you</h3><p>Home, office, or parking lot in Fort Bend County.</p></li></ol>
  <p>{s["mobile"]}</p>
  <h2>Why Walter</h2>
  <p>Walter Curo learned the trade as a U.S. Army mechanic, serving four years and maintaining more than 200 vehicles and pieces of equipment. He later spent years in dealership collision repair and worked as an insurance auto damage adjuster. He explains what's wrong in plain English and gives you the price first. <a href="/#why">More about Walter</a>.</p>
