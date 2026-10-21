@@ -28,14 +28,38 @@
     document.querySelectorAll('.card,.steps li,.why > *,.book-fallback,.book-frame,form').forEach(function(el){ el.classList.add('reveal'); io.observe(el); });
   }
 
-  // Quote form -> mailto
+  // Quote form -> FormSubmit (AJAX)
   var q = document.getElementById('quote-form');
-  if (q) q.addEventListener('submit', function(e){
-    e.preventDefault();
-    if (!q.reportValidity()) return;
-    var d = new FormData(q), L = [['Name','name'],['Phone','phone'],['Vehicle (year/make/model)','vehicle'],['Issue','issue'],['Location','location'],['Preferred time','time']];
-    var body = L.map(function(x){ return x[0] + ': ' + (d.get(x[1]) || ''); }).join('\n');
-    var subj = 'Quote request: ' + (d.get('vehicle') || 'vehicle') + ' (' + (d.get('name') || '') + ')';
-    window.location.href = 'mailto:' + c.EMAIL + '?subject=' + encodeURIComponent(subj) + '&body=' + encodeURIComponent(body);
-  });
+  if (q) {
+    var st = document.getElementById('quote-status'), btn = q.querySelector('button[type="submit"]'), label = btn ? btn.innerHTML : '';
+    var tel = 'tel:' + (c.PHONE_E164 || '+12817898609'), sms = 'sms:' + (c.PHONE_E164 || '+12817898609'), pd = c.PHONE_DISPLAY || '(281) 789-8609';
+    var show = function(cls, html){ if (!st) return; st.className = 'form-status ' + cls; st.innerHTML = html; st.hidden = false; st.focus(); };
+    q.addEventListener('submit', function(e){
+      e.preventDefault();
+      if (!q.reportValidity()) return;
+      if (btn && btn.getAttribute('aria-busy') === 'true') return;
+      var d = new FormData(q);
+      if ((d.get('_honey') || '').trim()) return; // bot
+      var payload = {
+        name: d.get('name') || '', phone: d.get('phone') || '', vehicle: d.get('vehicle') || '', issue: d.get('issue') || '',
+        location: d.get('location') || '', 'preferred time': d.get('time') || '',
+        _subject: 'New quote request - curomycar.com', _template: 'table', _captcha: 'false', _honey: ''
+      };
+      if (btn) { btn.disabled = true; btn.setAttribute('aria-busy', 'true'); btn.innerHTML = '<span class="spin" aria-hidden="true"></span> Sending\u2026'; }
+      if (st) st.hidden = true;
+      fetch('https://formsubmit.co/ajax/' + (c.EMAIL || 'walter@curomycar.com'), {
+        method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(payload)
+      }).then(function(r){ return r.json().catch(function(){ return {}; }).then(function(j){
+        if (!r.ok || String(j.success) === 'false') throw new Error(j.message || ('HTTP ' + r.status));
+      }); }).then(function(){
+        q.reset();
+        show('ok', 'Thanks! Walter will call or text you shortly.');
+      }).catch(function(){
+        show('err', 'Sorry, your request didn\u2019t go through. Please call or text Walter at ' + pd + '.' +
+          '<span class="actions"><a class="btn btn-sm" href="' + tel + '">Call ' + pd + '</a><a class="btn btn-sm btn-ghost" href="' + sms + '">Text Walter</a></span>');
+      }).then(function(){
+        if (btn) { btn.disabled = false; btn.removeAttribute('aria-busy'); btn.innerHTML = label; }
+      });
+    });
+  }
 })();

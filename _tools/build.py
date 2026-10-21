@@ -71,7 +71,7 @@ def footer(home=False):
     p = "" if home else "/"
     svc = "".join(f'<li><a href="/{s["slug"]}/">{esc(s["name"])}</a></li>' for s in SERVICES)
     cty = "".join(f'<li><a href="/{c["slug"]}/">{esc(c["name"])}</a></li>' for c in CITIES)
-    priv = ('<p class="priv" id="privacy"><b>Privacy:</b>&nbsp;This site uses no cookies, analytics, or trackers. The quote form does not store anything; it opens an email from your own mail app. If you book online, scheduling is handled by Microsoft Bookings under Microsoft\'s privacy policy. Your info is used only to contact you about your vehicle and is never sold. <a href="/privacy.html">Full privacy note</a>.</p>\n' if home else "")
+    priv = ('<p class="priv" id="privacy"><b>Privacy:</b>&nbsp;This site uses no cookies, analytics, or trackers. Quote requests are delivered to Walter\'s email by the FormSubmit service (formsubmit.co); this site does not store them. If you book online, scheduling is handled by Microsoft Bookings under Microsoft\'s privacy policy. Your info is used only to contact you about your vehicle and is never sold. <a href="/privacy.html">Full privacy note</a>.</p>\n' if home else "")
     return f'''<footer class="foot"><div class="wrap">
  <div class="foot-grid">
   <div><h2 class="foot-h"><a href="/services/">Services</a></h2><ul class="foot-links">{svc}</ul></div>
