@@ -132,7 +132,7 @@ def write(path, s):
     os.makedirs(os.path.dirname(full), exist_ok=True)
     open(full, "w").write(s)
 
-AREA_LD = [{"@type": "City", "name": f"{c['name']}, TX"} if c["slug"] != "southwest-houston-tx" else {"@type": "City", "name": "Houston, TX"} for c in CITIES] + [{"@type": "AdministrativeArea", "name": "Fort Bend County, TX"}]
+AREA_LD = [{"@type": "City", "name": f"{c['name']}, TX"} for c in CITIES] + [{"@type": "AdministrativeArea", "name": "Fort Bend County, TX"}]
 
 def service_page(s):
     path = f'/{s["slug"]}/'
@@ -164,7 +164,7 @@ def city_page(c):
     cr = [("Home", "/"), ("Service Area", "/service-area/"), (c["name"], path)]
     ld = [crumbs_ld(cr), {"@context": "https://schema.org", "@type": "Service", "@id": SITE + path + "#service", "name": f"Mobile mechanic in {c['name']}",
           "serviceType": "Mobile auto repair", "description": c["desc"], "url": SITE + path, "provider": BIZ,
-          "areaServed": {"@type": "City", "name": "Houston, TX" if c["slug"] == "southwest-houston-tx" else f"{c['name']}, TX"}}, faq_ld(c["faqs"])]
+          "areaServed": {"@type": "City", "name": f"{c['name']}, TX"}}, faq_ld(c["faqs"])]
     others = [(o["name"], "/"+o["slug"]+"/") for o in CITIES if o is not c]
     svc = "".join(f'<li class="card"><h3><a href="/{s["slug"]}/">{esc(s["name"])}</a></h3><p>{esc(strip(s["desc"]).split(". ")[0].rstrip("."))}.</p></li>' for s in SERVICES)
     body = hero(cr, f"Serving {esc(c['name'])} &middot; Mon&ndash;Sat 8am&ndash;6pm", esc(c["h1"]), c["paras"][0])
@@ -198,10 +198,10 @@ def hubs():
     ld = [crumbs_ld(cr)]
     cty = "".join(f'<li class="card"><h3><a href="/{c["slug"]}/">{esc(c["name"])}</a></h3><p>{esc(c["areas"].split(", ")[0])} and nearby.</p></li>' for c in CITIES)
     body = hero(cr, "Based in Stafford, TX", "Mobile Mechanic Service Area",
-                "Curo My Car is based in Stafford and serves Fort Bend County and nearby Southwest Houston. Walter comes to your home, office, or parking lot.")
+                "Curo My Car is based in Stafford and serves Fort Bend County and nearby Houston. Walter comes to your home, office, or parking lot.")
     body += f'<section class="sec"><div class="wrap"><ul class="grid">{cty}</ul><p class="sub sm-top">Just outside these areas? Call or text and ask. If it is workable, Walter will say so.</p></div></section>\n'
     body += cta_band("Call or text with your location and vehicle.") + "</main>\n"
-    write("/service-area/", head("Service Area: Fort Bend County, TX | Curo My Car", "Mobile mechanic serving Stafford, Sugar Land, Missouri City, Richmond, Rosenberg, Katy, Fulshear, Meadows Place and Southwest Houston.", "/service-area/", ld) + header() + body + footer())
+    write("/service-area/", head("Service Area: Fort Bend County, TX | Curo My Car", "Mobile mechanic serving Stafford, Sugar Land, Missouri City, Richmond, Rosenberg, Katy, Fulshear, Meadows Place and Houston.", "/service-area/", ld) + header() + body + footer())
 
 def sitemap():
     urls = [("/", "1.0"), ("/services/", "0.8"), ("/service-area/", "0.8")] + [("/"+s["slug"]+"/", "0.8") for s in SERVICES] + [("/"+c["slug"]+"/", "0.7") for c in CITIES] + [("/privacy.html", "0.2")]
