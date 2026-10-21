@@ -159,6 +159,10 @@ def service_page(s):
     body += cta_band(f'Call or text Walter about {esc(s["name"].lower())}. Tell him your vehicle and where it\'s parked.') + "</main>\n"
     write(path, head(s["title"], s["desc"], path, ld) + header() + body + footer())
 
+WILD_CARD = ('<li class="card"><h3><a href="/#quote">And Much More</a></h3>'
+             '<p>Don&#x27;t see what you need? If it&#x27;s on your car, just ask. Walter handles plenty of jobs not listed here. '
+             '<a href="/#quote">Ask About It &rarr;</a></p></li>')
+
 def city_page(c):
     path = f'/{c["slug"]}/'
     cr = [("Home", "/"), ("Service Area", "/service-area/"), (c["name"], path)]
@@ -166,7 +170,7 @@ def city_page(c):
           "serviceType": "Mobile auto repair", "description": c["desc"], "url": SITE + path, "provider": BIZ,
           "areaServed": {"@type": "City", "name": f"{c['name']}, TX"}}, faq_ld(c["faqs"])]
     others = [(o["name"], "/"+o["slug"]+"/") for o in CITIES if o is not c]
-    svc = "".join(f'<li class="card"><h3><a href="/{s["slug"]}/">{esc(s["name"])}</a></h3><p>{esc(strip(s["desc"]).split(". ")[0].rstrip("."))}.</p></li>' for s in SERVICES)
+    svc = "".join(f'<li class="card"><h3><a href="/{s["slug"]}/">{esc(s["name"])}</a></h3><p>{esc(strip(s["desc"]).split(". ")[0].rstrip("."))}.</p></li>' for s in SERVICES) + WILD_CARD
     body = hero(cr, f"Serving {esc(c['name'])} &middot; Mon&ndash;Sat 8am&ndash;6pm", esc(c["h1"]), c["paras"][0])
     body += f'''<section class="sec"><div class="wrap narrow prose">
  <h2>Car repair that comes to you in {esc(c["name"])}</h2>
@@ -187,7 +191,7 @@ def hubs():
     cr = [("Home", "/"), ("Services", "/services/")]
     ld = [crumbs_ld(cr), {"@context": "https://schema.org", "@type": "ItemList", "itemListElement": [
         {"@type": "ListItem", "position": i + 1, "url": SITE + "/" + s["slug"] + "/", "name": s["name"]} for i, s in enumerate(SERVICES)]}]
-    svc = "".join(f'<li class="card"><h3><a href="/{s["slug"]}/">{esc(s["name"])}</a></h3><p>{esc(strip(s["intro"][0]).split(". ")[0].rstrip("."))}.</p></li>' for s in SERVICES)
+    svc = "".join(f'<li class="card"><h3><a href="/{s["slug"]}/">{esc(s["name"])}</a></h3><p>{esc(strip(s["intro"][0]).split(". ")[0].rstrip("."))}.</p></li>' for s in SERVICES) + WILD_CARD
     body = hero(cr, "Mobile auto repair &middot; Fort Bend County, TX", "Mobile Auto Repair Services",
                 "Everything below can usually be done at your home or work. If a job truly needs a lift or a shop, Walter will tell you up front.")
     body += f'<section class="sec"><div class="wrap"><ul class="grid">{svc}</ul><p class="sub sm-top">Not sure what you need? Start with <a href="/check-engine-light-diagnostics/">diagnostics</a>, or just call or text and describe the problem.</p></div></section>\n'
