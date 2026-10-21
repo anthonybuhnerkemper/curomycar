@@ -29,7 +29,7 @@
   }
 
   // Quote form -> FormSubmit (AJAX)
-  var q = document.getElementById('quote-form');
+  var q = document.getElementById('quote-form'), loadedAt = Date.now();
   if (q) {
     var st = document.getElementById('quote-status'), btn = q.querySelector('button[type="submit"]'), label = btn ? btn.innerHTML : '';
     var tel = 'tel:' + (c.PHONE_E164 || '+12817898609'), sms = 'sms:' + (c.PHONE_E164 || '+12817898609'), pd = c.PHONE_DISPLAY || '(281) 789-8609';
@@ -39,11 +39,14 @@
       if (!q.reportValidity()) return;
       if (btn && btn.getAttribute('aria-busy') === 'true') return;
       var d = new FormData(q);
-      if ((d.get('_honey') || '').trim()) return; // bot
+      var hp = String(d.get('_honey') || '');
+      if (hp.trim() || Date.now() - loadedAt < 3000) { // likely bot: fake success, send nothing
+        q.reset(); show('ok', 'Thanks! Walter will call or text you shortly.'); return;
+      }
       var payload = {
         name: d.get('name') || '', phone: d.get('phone') || '', vehicle: d.get('vehicle') || '', issue: d.get('issue') || '',
         location: d.get('location') || '', 'preferred time': d.get('time') || '',
-        _subject: 'New quote request - curomycar.com', _template: 'table', _captcha: 'false', _honey: ''
+        _subject: 'New quote request - curomycar.com', _template: 'table', _captcha: 'false', _honey: hp
       };
       if (btn) { btn.disabled = true; btn.setAttribute('aria-busy', 'true'); btn.innerHTML = '<span class="spin" aria-hidden="true"></span> Sending\u2026'; }
       if (st) st.hidden = true;
