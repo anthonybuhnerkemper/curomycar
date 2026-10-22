@@ -149,7 +149,7 @@ def service_page(s):
  <ol class="steps steps-sm"><li><b>1</b><h3>Call, text, or request a quote</h3><p>Tell Walter the year, make and model and what's going on.</p></li><li><b>2</b><h3>Get an upfront price</h3><p>You know the cost before any work starts.</p></li><li><b>3</b><h3>Walter comes to you</h3><p>Home, office, or parking lot in Fort Bend County.</p></li></ol>
  <p>{s["mobile"]}</p>
  <h2>Why Walter</h2>
- <p>Walter Curo learned the trade as a U.S. Army mechanic, serving four years and maintaining more than 200 vehicles and pieces of equipment. He later spent years in dealership collision repair and worked as an insurance auto damage adjuster. He explains what's wrong in plain English and gives you the price first. <a href="/#why">More about Walter</a>.</p>
+ <p>Walter Curo grew up around cars and got his formal training as a U.S. Army mechanic. Since then he has worked on diesel trucks, heavy equipment and forklifts, worked as a dealership technician, and spent years as an auto insurance adjuster and in the body-shop world. He works on all makes and models. He explains what's wrong in plain English and gives you the price first. <a href="/#why">More about Walter</a>.</p>
 </div></section>
 '''
     body += faq_html(s["faqs"])
@@ -178,7 +178,7 @@ def city_page(c):
  <h2>Areas we cover in and around {esc(c["name"])}</h2>
  <p>{esc(c["areas"])}. Not sure if you're in range? Call or text and ask.</p>
  <h2>Your mechanic</h2>
- <p>Walter Curo is an Army-trained mechanic (four years in the U.S. Army, maintaining more than 200 vehicles and pieces of equipment) with years of dealership collision repair experience and a background as an insurance auto damage adjuster. You get a straight answer and a price before any work starts.</p>
+ <p>Walter Curo is an Army-trained mechanic who has worked on diesel trucks, heavy equipment and forklifts, worked as a dealership technician, and spent years as an auto insurance adjuster and in the body-shop world. He works on all makes and models. You get a straight answer and a price before any work starts.</p>
 </div></section>
 <section class="sec alt"><div class="wrap"><h2 class="stencil">Mobile services in {esc(c["name"])}</h2><p class="sub">Common jobs Walter handles on site. Don't see yours? Just ask.</p><ul class="grid">{svc}</ul></div></section>
 '''
