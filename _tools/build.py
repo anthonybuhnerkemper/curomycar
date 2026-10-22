@@ -146,21 +146,21 @@ def service_page(s):
  <h2>What's included</h2>{ul(s["included"])}
  <h2>Signs you need it</h2>{ul(s["signs"], "bullets")}
  <h2>How mobile service works</h2>
- <ol class="steps steps-sm"><li><b>1</b><h3>Call, text, or request a quote</h3><p>Tell Walter the year, make and model and what's going on.</p></li><li><b>2</b><h3>Get an upfront price</h3><p>You know the cost before any work starts.</p></li><li><b>3</b><h3>Walter comes to you</h3><p>Home, office, or parking lot in Fort Bend County.</p></li></ol>
+ <ol class="steps steps-sm"><li><b>1</b><h3>Call, text, or request a quote</h3><p>Tell me the year, make and model and what's going on.</p></li><li><b>2</b><h3>Get an upfront price</h3><p>You know the cost before any work starts.</p></li><li><b>3</b><h3>I come to you</h3><p>Home, office, or parking lot in Fort Bend County.</p></li></ol>
  <p>{s["mobile"]}</p>
  <h2>Why Walter</h2>
- <p>Walter Curo grew up around cars and got his formal training as a U.S. Army mechanic. Since then he has worked on diesel trucks, heavy equipment and forklifts, worked as a dealership technician, and spent years as an auto insurance adjuster and in the body-shop world. He works on all makes and models. He explains what's wrong in plain English and gives you the price first. <a href="/#why">More about Walter</a>.</p>
+ <p>Hi, I'm Walter Curo, owner of Curo My Car. I grew up around cars and got my formal training as a U.S. Army mechanic. Since then I've worked on diesel trucks, heavy equipment and forklifts, worked as a dealership technician, and spent years as an auto insurance adjuster and in the body-shop world. I work on all makes and models. I explain what's wrong in plain English and give you the price first. <a href="/#why">More about me</a>.</p>
 </div></section>
 '''
     body += faq_html(s["faqs"])
     body += f'''<section class="sec alt"><div class="wrap"><h2 class="stencil">Related services</h2>{links(rel)}
 <h2 class="stencil sm-top">Where we offer {esc(s["short"].lower() if s["slug"]!="pre-purchase-inspection" else "pre-purchase inspections")}</h2><p class="sub">{esc(s["name"])} is available across Fort Bend County and nearby:</p>{links([(c["name"], "/"+c["slug"]+"/") for c in CITIES], "areas arealinks")}</div></section>
 '''
-    body += cta_band(f'Call or text Walter about {esc(s["name"].lower())}. Tell him your vehicle and where it\'s parked.') + "</main>\n"
+    body += cta_band(f'Call or text me about {esc(s["name"].lower())}. Tell me your vehicle and where it\'s parked.') + "</main>\n"
     write(path, head(s["title"], s["desc"], path, ld) + header() + body + footer())
 
 WILD_CARD = ('<li class="card"><h3><a href="/#quote">And Much More</a></h3>'
-             '<p>Don&#x27;t see what you need? If it&#x27;s on your car, just ask. Walter handles plenty of jobs not listed here. '
+             '<p>Don&#x27;t see what you need? If it&#x27;s on your car, just ask. I handle plenty of jobs not listed here. '
              '<a href="/#quote">Ask About It &rarr;</a></p></li>')
 
 def city_page(c):
@@ -178,13 +178,13 @@ def city_page(c):
  <h2>Areas we cover in and around {esc(c["name"])}</h2>
  <p>{esc(c["areas"])}. Not sure if you're in range? Call or text and ask.</p>
  <h2>Your mechanic</h2>
- <p>Walter Curo is an Army-trained mechanic who has worked on diesel trucks, heavy equipment and forklifts, worked as a dealership technician, and spent years as an auto insurance adjuster and in the body-shop world. He works on all makes and models. You get a straight answer and a price before any work starts.</p>
+ <p>Hi, I'm Walter Curo, owner of Curo My Car. I'm an Army-trained mechanic, and I've worked on diesel trucks, heavy equipment and forklifts, worked as a dealership technician, and spent years as an auto insurance adjuster and in the body-shop world. I work on all makes and models. You get a straight answer and a price before any work starts.</p>
 </div></section>
-<section class="sec alt"><div class="wrap"><h2 class="stencil">Mobile services in {esc(c["name"])}</h2><p class="sub">Common jobs Walter handles on site. Don't see yours? Just ask.</p><ul class="grid">{svc}</ul></div></section>
+<section class="sec alt"><div class="wrap"><h2 class="stencil">Mobile services in {esc(c["name"])}</h2><p class="sub">Common jobs I handle on site. Don't see yours? Just ask.</p><ul class="grid">{svc}</ul></div></section>
 '''
     body += faq_html(c["faqs"], f"{esc(c['name'])} FAQ")
     body += f'<section class="sec alt"><div class="wrap"><h2 class="stencil">Nearby areas we serve</h2>{links(others, "areas arealinks")}</div></section>\n'
-    body += cta_band(f'Need a mechanic in {esc(c["name"])}? Call or text Walter with your vehicle and what\'s going on.') + "</main>\n"
+    body += cta_band(f'Need a mechanic in {esc(c["name"])}? Call or text me with your vehicle and what\'s going on.') + "</main>\n"
     write(path, head(c["title"], c["desc"], path, ld) + header() + body + footer())
 
 def hubs():
@@ -193,17 +193,17 @@ def hubs():
         {"@type": "ListItem", "position": i + 1, "url": SITE + "/" + s["slug"] + "/", "name": s["name"]} for i, s in enumerate(SERVICES)]}]
     svc = "".join(f'<li class="card"><h3><a href="/{s["slug"]}/">{esc(s["name"])}</a></h3><p>{esc(strip(s["intro"][0]).split(". ")[0].rstrip("."))}.</p></li>' for s in SERVICES) + WILD_CARD
     body = hero(cr, "Mobile auto repair &middot; Fort Bend County, TX", "Mobile Auto Repair Services",
-                "Everything below can usually be done at your home or work. If a job truly needs a lift or a shop, Walter will tell you up front.")
+                "Everything below can usually be done at your home or work. If a job truly needs a lift or a shop, I'll tell you up front.")
     body += f'<section class="sec"><div class="wrap"><ul class="grid">{svc}</ul><p class="sub sm-top">Not sure what you need? Start with <a href="/check-engine-light-diagnostics/">diagnostics</a>, or just call or text and describe the problem.</p></div></section>\n'
-    body += cta_band("Tell Walter your vehicle and what's going on, and get a price before any work starts.") + "</main>\n"
+    body += cta_band("Tell me your vehicle and what's going on, and get a price before any work starts.") + "</main>\n"
     write("/services/", head("Mobile Auto Repair Services | Curo My Car", "Brakes, oil changes, diagnostics, batteries, AC checks, tune-ups, inspections and fleet service, done at your home or work in Fort Bend County, TX.", "/services/", ld) + header() + body + footer())
 
     cr = [("Home", "/"), ("Service Area", "/service-area/")]
     ld = [crumbs_ld(cr)]
     cty = "".join(f'<li class="card"><h3><a href="/{c["slug"]}/">{esc(c["name"])}</a></h3><p>{esc(c["areas"].split(", ")[0])} and nearby.</p></li>' for c in CITIES)
     body = hero(cr, "Based in Stafford, TX", "Mobile Mechanic Service Area",
-                "Curo My Car is based in Stafford and serves Fort Bend County and nearby Houston. Walter comes to your home, office, or parking lot.")
-    body += f'<section class="sec"><div class="wrap"><ul class="grid">{cty}</ul><p class="sub sm-top">Just outside these areas? Call or text and ask. If it is workable, Walter will say so.</p></div></section>\n'
+                "Curo My Car is based in Stafford and serves Fort Bend County and nearby Houston. I come to your home, office, or parking lot.")
+    body += f'<section class="sec"><div class="wrap"><ul class="grid">{cty}</ul><p class="sub sm-top">Just outside these areas? Call or text and ask. If it is workable, I\'ll say so.</p></div></section>\n'
     body += cta_band("Call or text with your location and vehicle.") + "</main>\n"
     write("/service-area/", head("Service Area: Fort Bend County, TX | Curo My Car", "Mobile mechanic serving Stafford, Sugar Land, Missouri City, Richmond, Rosenberg, Katy, Fulshear, Meadows Place and Houston.", "/service-area/", ld) + header() + body + footer())
 

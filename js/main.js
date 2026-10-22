@@ -41,7 +41,7 @@
       var d = new FormData(q);
       var hp = String(d.get('_honey') || '');
       if (hp.trim() || Date.now() - loadedAt < 3000) { // likely bot: fake success, send nothing
-        q.reset(); show('ok', 'Thanks! Walter will call or text you shortly.'); return;
+        q.reset(); show('ok', 'Thanks! I\u2019ll call or text you shortly. \u2013 Walter'); return;
       }
       var payload = {
         name: d.get('name') || '', phone: d.get('phone') || '', vehicle: d.get('vehicle') || '', issue: d.get('issue') || '',
@@ -56,9 +56,9 @@
         if (!r.ok || String(j.success) === 'false') throw new Error(j.message || ('HTTP ' + r.status));
       }); }).then(function(){
         q.reset();
-        show('ok', 'Thanks! Walter will call or text you shortly.');
+        show('ok', 'Thanks! I\u2019ll call or text you shortly. \u2013 Walter');
       }).catch(function(){
-        show('err', 'Sorry, your request didn\u2019t go through. Please call or text Walter at ' + pd + '.' +
+        show('err', 'Sorry, your request didn\u2019t go through. Please call or text me at ' + pd + '.' +
           '<span class="actions"><a class="btn btn-sm" href="' + tel + '">Call ' + pd + '</a><a class="btn btn-sm btn-ghost" href="' + sms + '">Text Walter</a></span>');
       }).then(function(){
         if (btn) { btn.disabled = false; btn.removeAttribute('aria-busy'); btn.innerHTML = label; }
